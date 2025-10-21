@@ -23,7 +23,7 @@ class SupabaseUpdaterArgs(BaseModel):
 class SupabaseUpdater(BaseTool):
     name: str = "Supabase Updater Tool"
     description: str = "Atualiza imóveis no Supabase com resultados da análise de IA."
-    args_schema = SupabaseUpdaterArgs
+    args_schema: type = SupabaseUpdaterArgs
 
     def _run(self, id: str, analise_json: Dict[str, Any]) -> str:
         try:
