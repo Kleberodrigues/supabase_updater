@@ -1,5 +1,15 @@
-# tool.py
-from crewai_tools.tools.base_tool import BaseTool
+# imports compatíveis com diferentes versões
+try:
+    # CrewAI 1.x (recomendado)
+    from crewai.tools import BaseTool
+except Exception:
+    try:
+        # Algumas versões do crewai-tools
+        from crewai_tools.tools.base_tool import BaseTool
+    except Exception:
+        # Outras versões antigas do crewai-tools
+        from crewai_tools import BaseTool
+
 from pydantic import BaseModel, Field
 from typing import Any, Dict
 import os
