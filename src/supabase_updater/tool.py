@@ -1,5 +1,5 @@
 # tool.py
-from crewai_tools import BaseTool
+from crewai_tools.tools.base_tool import BaseTool
 from pydantic import BaseModel, Field
 from typing import Any, Dict
 import os
