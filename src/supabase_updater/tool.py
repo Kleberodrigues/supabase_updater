@@ -1,33 +1,25 @@
-from crewai.tools import BaseTool
-
-
-class SupabaseUpdater(BaseTool):
-    name: str = "Name of my tool"
-    description: str = "What this tool does. It's vital for effective utilization."
-
-    def _run(self, argument: str) -> str:
-        # Your tool's logic here
-        return "Tool's result"
+# tool.py
 from crewai_tools import BaseTool
-import requests
+from pydantic import BaseModel, Field
+from typing import Any, Dict
 import os
-from typing import Dict, Any
+import requests
+import json
 
 
-class SupabaseUpdater(BaseTool):
-    """
-    Atualiza a tabela public.imoveis_leilao no Supabase com os resultados da análise.
-    Argumentos esperados no _run:
-      - id (str): UUID do imóvel na tabela
-      - analise_json (dict): dicionário com campos da análise (ex.: recomendacao, desconto_pct, racional)
-    """
-
-    name = "Supabase Updater Tool"
-    description = (
-        "Atualiza imóveis no Supabase com os resultados da análise de IA. "
-        "Use com argumentos: id (str) e analise_json (dict)."
+class SupabaseUpdaterArgs(BaseModel):
+    id: str = Field(..., description="UUID do imóvel na tabela imoveis_leilao")
+    analise_json: Dict[str, Any] = Field(
+        ..., description="Resultado da análise de IA em formato dict/JSON"
     )
 
+
+class SupabaseUpdater(BaseTool):
+    name = "Supabase Updater Tool"
+    description = "Atualiza imóveis no Supabase com resultados da análise de IA."
+    args_schema = SupabaseUpdaterArgs  # <- importante!
+
+    # Use com argumentos: id (str) e analise_json (dict)
     def _run(self, id: str, analise_json: Dict[str, Any]) -> str:
         try:
             supabase_url = os.getenv("SUPABASE_URL")
@@ -45,24 +37,32 @@ class SupabaseUpdater(BaseTool):
                 "Prefer": "return=representation",
             }
 
-            # Monte o payload a partir do seu esquema
+            # Monta o payload conforme o seu esquema
             payload = {
                 "analise_status": "concluida",
                 "score_geral": analise_json.get("recomendacao"),
                 "roi_percentual": analise_json.get("desconto_pct"),
                 "justificativa_ia": analise_json.get("racional"),
-                # Se tiver mais campos, adicione aqui:
-                # "risco_legal": analise_json.get("risco_legal"),
+                "updated_at": "now()",
+                # Campos adicionais, se existirem:
                 # "nota_localizacao": analise_json.get("nota_localizacao"),
-                # ...
+                # "risco_legal": analise_json.get("risco_legal"),
             }
 
+            # Envia PATCH para o Supabase
             resp = requests.patch(url, headers=headers, json=payload, timeout=30)
 
+            # Trata a resposta
             if resp.status_code in (200, 204):
+                try:
+                    body = resp.json() if resp.content else None
+                except Exception:
+                    body = None
+                if body == []:
+                    return f"⚠️ Nenhum imóvel encontrado para ID {id}."
                 return f"✅ Atualizado com sucesso (ID: {id})."
             else:
-                return f"⚠️ Erro {resp.status_code}: {resp.text}"
+                return f"⚠️ Erro ({resp.status_code}): {resp.text}"
 
         except Exception as e:
             return f"❌ Erro ao atualizar Supabase: {e}"
