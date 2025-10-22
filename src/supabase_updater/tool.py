@@ -32,7 +32,7 @@ class SupabaseUpdater(BaseTool):
             if not supabase_url or not service_key:
                 return "❌ Variáveis SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY não configuradas."
 
-            url = f"{supabase_url}/rest/v1/imoveis_leilao?id=eq.{id}"
+            url = f"{supabase_url}/rest/v1/analises_viabilidade?id=eq.{id}"
             headers = {
                 "apikey": service_key,
                 "Authorization": f"Bearer {service_key}",
