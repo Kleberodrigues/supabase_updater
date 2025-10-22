@@ -41,12 +41,13 @@ class SupabaseUpdater(BaseTool):
             }
 
             payload = {
-                "analise_status": "concluida",
-                "score_geral": analise_json.get("recomendacao"),
-                "roi_percentual": analise_json.get("desconto_pct"),
-                "justificativa_ia": analise_json.get("racional"),
-                "updated_at": "now()",
-            }
+    "score_geral": analise_json.get("recomendacao"),
+    "roi_percentual": analise_json.get("desconto_pct"),
+    "justificativa_ia": analise_json.get("racional"),
+    # "analise_status": "concluida",  # 🔥 comentar se não existir
+    # "updated_at": "now()",         # 🔥 comentar se não existir
+}
+
 
             resp = requests.patch(url, headers=headers, json=payload, timeout=30)
 
