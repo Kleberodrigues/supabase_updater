@@ -1,12 +1,9 @@
 [project]
-name = "supabase_updater"
+name = "supabase-updater"
 version = "0.1.0"
-description = "Power up your crews with supabase_updater"
-readme = "README.md"
-requires-python = ">=3.10,<3.14"
-dependencies = [
-    "crewai[tools]>=0.203.1"
+description = "Atualiza a base Supabase com os dados de recomendação"
+authors = [
+    { name = "Seu Nome", email = "seu@email.com" }
 ]
-
-[tool.crewai]
-type = "tool"
+dependencies = []
+requires-python = ">=3.9"
