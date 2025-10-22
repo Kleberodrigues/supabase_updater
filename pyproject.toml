@@ -1,7 +1,6 @@
 [project]
 name = "supabase_updater"
-version = "0.1.0"  # ✅ Deve seguir o padrão MAJOR.MINOR.PATCH
-
+version = "0.1.1"
 description = "Ferramenta CrewAI para atualizar dados no Supabase"
 authors = [{name = "Seu Nome", email = "seu@email.com"}]
 dependencies = [
@@ -15,3 +14,6 @@ dependencies = [
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
