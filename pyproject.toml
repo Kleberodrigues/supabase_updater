@@ -1,6 +1,7 @@
 [project]
 name = "supabase_updater"
-version = "0.1.0"
+version = "0.1.0"  # ✅ Deve seguir o padrão MAJOR.MINOR.PATCH
+
 description = "Ferramenta CrewAI para atualizar dados no Supabase"
 authors = [{name = "Seu Nome", email = "seu@email.com"}]
 dependencies = [
