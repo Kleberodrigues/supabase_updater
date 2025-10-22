@@ -13,7 +13,7 @@ except Exception as e:
     exit(1)
 
 # Preencha com um ID real existente na sua tabela do Supabase
-TEST_ID = "substitua_por_um_id_real"
+TEST_ID = "7b30b9e3-27a2-4bd9-a022-40c4b6b2f2e1"
 
 analise_teste = {
     "recomendacao": 8.9,
